@@ -68,3 +68,58 @@ Content-Type: application/json
   "subject": "Atualização",
   "content": "Novo update disponível."
 }
+###
+
+### TESTE 8 – Processar um pagamento via cartão (Adapter)
+POST http://localhost:3000/payments
+Content-Type: application/json
+
+{
+  "amount": 250,
+  "method": "cartao",
+  "customer": "Roberto Santos"
+}
+
+###
+
+### TESTE 9 – Processar um pagamento via PIX (Adapter)
+POST http://localhost:3000/payments
+Content-Type: application/json
+
+{
+  "amount": 480,
+  "method": "pix",
+  "customer": "Maria Oliveira"
+}
+
+###
+
+### TESTE 10 – Gerar relatório básico (Decorator)
+POST http://localhost:3000/reports
+Content-Type: application/json
+
+{
+  "author": "Roberto Santos",
+  "addTimestamp": false
+}
+
+###
+
+### TESTE 11 – Gerar relatório com timestamp e assinatura (Decorator)
+POST http://localhost:3000/reports
+Content-Type: application/json
+
+{
+  "author": "Roberto Santos",
+  "addTimestamp": true
+}
+
+###
+
+### TESTE 12 – Gerar relatório sem autor, apenas com timestamp (Decorator)
+POST http://localhost:3000/reports
+Content-Type: application/json
+
+{
+  "addTimestamp": true
+}
