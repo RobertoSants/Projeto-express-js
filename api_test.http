@@ -1,7 +1,5 @@
-#############################################
-# API TESTS — Parte 1, Parte 2 e Parte 3
+# API TESTS — Partes 1 a 4 (corrigido)
 # Use com o REST Client (extensão do VS Code)
-#############################################
 
 # ---------- PARTE 1 — CRIACIONAIS ----------
 ### TESTE 1 - Criar log info
@@ -71,7 +69,7 @@ Content-Type: application/json
 
 ###
 
-### TESTE 7 - Criar pedido via Facade
+### TESTE 7 - Criar pedido via Facade (Parte 2)
 POST http://localhost:3000/facade/order
 Content-Type: application/json
 
@@ -118,7 +116,7 @@ Content-Type: application/json
 
 ###
 
-### TESTE 11 - Chain: submeter pedido (válido)
+### TESTE 11 - Chain: submeter pedido (válido) — Parte 3
 POST http://localhost:3000/orders
 Content-Type: application/json
 
@@ -129,7 +127,7 @@ Content-Type: application/json
 
 ###
 
-### TESTE 12 - Chain: submeter pedido (estoque insuficiente)
+### TESTE 12 - Chain: submeter pedido (estoque insuficiente) — Parte 3
 POST http://localhost:3000/orders
 Content-Type: application/json
 
@@ -140,7 +138,7 @@ Content-Type: application/json
 
 ###
 
-### TESTE 13 - Template: processar pagamento por cartão
+### TESTE 13 - Template: processar pagamento por cartão (Parte 3)
 POST http://localhost:3000/payproc
 Content-Type: application/json
 
@@ -151,7 +149,7 @@ Content-Type: application/json
 
 ###
 
-### TESTE 14 - Template: processar pagamento via PayPal
+### TESTE 14 - Template: processar pagamento via PayPal (Parte 3)
 POST http://localhost:3000/payproc
 Content-Type: application/json
 
@@ -159,3 +157,74 @@ Content-Type: application/json
   "type": "paypal",
   "paymentInfo": { "paypalAccount": "user@paypal.com", "amount": 99.9 }
 }
+
+###
+
+# ---------- PARTE 4 — PROJETO INTEGRADOR ----------
+### TESTE 15 - Catálogo: criar produto (Factory + Builder + Observer)
+POST http://localhost:3000/catalog/create
+Content-Type: application/json
+
+{
+  "type": "eletronico",
+  "name": "Smart TV 50",
+  "stock": 5
+}
+
+###
+
+### TESTE 16 - Carrinho: calcular total (Composite + Strategy)
+POST http://localhost:3000/cart/checkout
+Content-Type: application/json
+
+{
+  "items": [
+    { "name": "Smart TV", "price": 2500 },
+    { "name": "HD Externo", "price": 300 }
+  ],
+  "shippingType": "flat"
+}
+
+###
+
+### TESTE 17 - Pedido E-commerce: processar (Chain + Template) — usa rota /ecomorders
+POST http://localhost:3000/ecomorders/process
+Content-Type: application/json
+
+{
+  "items": [
+    { "id": "TV", "price": 2500, "stock": 3 },
+    { "id": "HD", "price": 300, "stock": 10 }
+  ],
+  "payment": { "type": "paypal", "data": { "paypalAccount": "cliente@pay.com", "amount": 2800 } },
+  "discount": 50,
+  "customer": { "name": "Roberto", "email": "roberto@example.com" }
+}
+
+###
+
+### TEST 18 - Sistema de Descontos (Strategy + Decorator) — Parte 4
+POST http://localhost:3000/discountsys/apply
+Content-Type: application/json
+
+{
+  "amount": 1000,
+  "strategies": [
+    { "type": "percent", "value": 10 },
+    { "type": "fixed", "value": 50 }
+  ],
+  "combine": true
+}
+
+###
+
+### TEST 19 - Integração com serviços externos (Adapter + Facade) — Parte 4
+POST http://localhost:3000/integrations/external-order
+Content-Type: application/json
+
+{
+  "amount": 199.9,
+  "customer": { "name": "Cliente Externo" }
+}
+
+###
