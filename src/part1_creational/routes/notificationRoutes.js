@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { getNotificationService } = require("../notifications/notificationFactory");
-const logger = require("../logger/Logger");
+const { getNotificationService } = require("../factory_method/NotificationFactory");
+const logger = require("../singleton/LoggingService.js");
 
 // Envia uma notificação
 router.post("/", async (req, res) => {

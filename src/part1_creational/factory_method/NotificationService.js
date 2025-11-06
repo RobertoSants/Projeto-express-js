@@ -2,7 +2,7 @@
 class NotificationService {
   // Método genérico que as subclasses devem implementar
   async sendNotification(recipient, subject, content) {
-    throw new Error("Método deve ser implementado nas subclasses");
+    throw new Error("O método deve ser implementado pelas subclasses.");
   }
 }
 

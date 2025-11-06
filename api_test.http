@@ -1,125 +1,126 @@
-### Teste 0 - Verificar servidor
-GET http://localhost:3000/
-Accept: application/json
+#############################################
+### 🔹 PARTE 1 – PADRÕES CRIACIONAIS
+### Singleton (LoggingService) e Factory Method (Notificações)
+#############################################
 
-###
-
-### Teste 1 - Listar logs (GET)
-GET http://localhost:3000/logs
-Accept: application/json
-
-###
-
-### Teste 2 - Criar log informativo (POST)
+### TESTE 1 – Criar log informativo
 POST http://localhost:3000/logs
 Content-Type: application/json
 
 {
   "level": "info",
-  "message": "Primeiro log via REST Client"
+  "message": "Servidor inicializado com sucesso."
 }
 
 ###
 
-### Teste 3 - Criar log de erro (POST)
+### TESTE 2 – Criar log de aviso
+POST http://localhost:3000/logs
+Content-Type: application/json
+
+{
+  "level": "warn",
+  "message": "Uso de memória acima do esperado."
+}
+
+###
+
+### TESTE 3 – Criar log de erro
 POST http://localhost:3000/logs
 Content-Type: application/json
 
 {
   "level": "error",
-  "message": "Erro de teste via REST Client"
+  "message": "Falha ao conectar com o banco de dados."
 }
 
 ###
 
-### Teste 4 - Enviar notificação por email (POST)
+### TESTE 4 – Listar os logs recentes
+GET http://localhost:3000/logs
+
+
+#############################################
+### 🔹 TESTES DE NOTIFICAÇÕES (Factory Method)
+#############################################
+
+### TESTE 5 – Enviar notificação via E-mail (padrão)
 POST http://localhost:3000/notify
 Content-Type: application/json
 
 {
   "type": "email",
   "recipient": "roberto@example.com",
-  "subject": "Boas-vindas",
-  "content": "Sua conta foi criada com sucesso."
+  "subject": "Boas-vindas!",
+  "content": "Olá Roberto, seu cadastro foi concluído."
 }
 
 ###
 
-### Teste 5 - Enviar notificação via SMS (POST)
+### TESTE 6 – Enviar notificação via SMS
 POST http://localhost:3000/notify
 Content-Type: application/json
 
 {
   "type": "sms",
-  "recipient": "+5582988887777",
-  "subject": "Alerta",
-  "content": "Seu pedido foi despachado."
+  "recipient": "+5582987654321",
+  "content": "Seu pedido foi enviado!"
 }
 
 ###
 
-### Teste 6 - Enviar notificação via Push (POST)
+### TESTE 7 – Enviar notificação via Push
 POST http://localhost:3000/notify
 Content-Type: application/json
 
 {
   "type": "push",
-  "recipient": "user123",
-  "subject": "Atualização",
-  "content": "Novo update disponível."
+  "recipient": "roberto_device_01",
+  "subject": "Atualização disponível",
+  "content": "Nova versão do app lançada!"
 }
-###
 
-### TESTE 8 – Processar um pagamento via cartão (Adapter)
+
+#############################################
+### 🔹 PARTE 2 – PADRÕES ESTRUTURAIS
+### Adapter (Pagamentos) e Decorator (Exportação de dados)
+#############################################
+
+### TESTE 8 – Processar pagamento (Adapter)
 POST http://localhost:3000/payments
 Content-Type: application/json
 
 {
-  "amount": 250,
-  "method": "cartao",
-  "customer": "Roberto Santos"
+  "orderId": "ORD12345",
+  "amount": 299.99
 }
 
 ###
 
-### TESTE 9 – Processar um pagamento via PIX (Adapter)
-POST http://localhost:3000/payments
+### TESTE 9 – Exportar dados sem compressão (Decorator)
+POST http://localhost:3000/exports
 Content-Type: application/json
 
 {
-  "amount": 480,
-  "method": "pix",
-  "customer": "Maria Oliveira"
+  "data": {
+    "id": 1,
+    "cliente": "Roberto Santos",
+    "valor": 150.00
+  },
+  "compressed": false
 }
 
 ###
 
-### TESTE 10 – Gerar relatório básico (Decorator)
-POST http://localhost:3000/reports
+### TESTE 10 – Exportar dados com compressão (Decorator)
+POST http://localhost:3000/exports
 Content-Type: application/json
 
 {
-  "author": "Roberto Santos",
-  "addTimestamp": false
-}
-
-###
-
-### TESTE 11 – Gerar relatório com timestamp e assinatura (Decorator)
-POST http://localhost:3000/reports
-Content-Type: application/json
-
-{
-  "author": "Roberto Santos",
-  "addTimestamp": true
-}
-
-###
-
-### TESTE 12 – Gerar relatório sem autor, apenas com timestamp (Decorator)
-POST http://localhost:3000/reports
-Content-Type: application/json
-
-{
-  "addTimestamp": true
+  "data": {
+    "id": 2,
+    "cliente": "Maria Oliveira",
+    "valor": 480.00
+  },
+  "compressed": true
 }

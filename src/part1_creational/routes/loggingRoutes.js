@@ -1,6 +1,8 @@
+// Endpoint REST para o serviço de logs
+
 const express = require("express");
 const router = express.Router();
-const logger = require("../logger/Logger");
+const logger = require("../singleton/LoggingService");
 
 // Retorna os logs recentes
 router.get("/", (req, res) => {
@@ -8,10 +10,10 @@ router.get("/", (req, res) => {
   res.json(logger.getRecent(limit));
 });
 
-// Cria um novo log (info, warn ou error)
+// Adiciona novo log
 router.post("/", (req, res) => {
   const { level = "info", message = "" } = req.body;
-  const entry = logger[level](message); // Usa o método correspondente ao nível informado
+  const entry = logger[level](message);
   res.status(201).json(entry);
 });
 
