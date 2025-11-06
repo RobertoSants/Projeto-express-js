@@ -1,7 +1,9 @@
-// LegacyPaymentProcessor.js — Interface antiga (incompatível)
+// "interface" do sistema legado
+// Define o método processPayment(orderId, amount) usado pelo código legado.
 class LegacyPaymentProcessor {
   processPayment(orderId, amount) {
-    throw new Error("Método abstrato — deve ser implementado");
+    throw new Error("Implementar processPayment no adaptador");
   }
 }
+
 module.exports = LegacyPaymentProcessor;

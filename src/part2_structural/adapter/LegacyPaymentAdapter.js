@@ -1,4 +1,4 @@
-// LegacyPaymentAdapter.js — Adapta o novo sistema para o legado
+// Adapta a nova API para a interface legada
 const LegacyPaymentProcessor = require("./LegacyPaymentProcessor");
 const NewPaymentSystem = require("./NewPaymentSystem");
 
@@ -9,8 +9,9 @@ class LegacyPaymentAdapter extends LegacyPaymentProcessor {
   }
 
   processPayment(orderId, amount) {
-    const request = { orderId, amount };
-    return this.newSystem.executePayment(request);
+    // converte os parâmetros legados para a estrutura esperada pela nova API
+    const req = { orderId, amount };
+    return this.newSystem.executePayment(req);
   }
 }
 

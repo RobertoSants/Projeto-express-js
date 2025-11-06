@@ -1,126 +1,161 @@
 #############################################
-### 🔹 PARTE 1 – PADRÕES CRIACIONAIS
-### Singleton (LoggingService) e Factory Method (Notificações)
+# API TESTS — Parte 1, Parte 2 e Parte 3
+# Use com o REST Client (extensão do VS Code)
 #############################################
 
-### TESTE 1 – Criar log informativo
+# ---------- PARTE 1 — CRIACIONAIS ----------
+### TESTE 1 - Criar log info
 POST http://localhost:3000/logs
 Content-Type: application/json
 
 {
   "level": "info",
-  "message": "Servidor inicializado com sucesso."
+  "message": "Servidor iniciado - teste api_test"
 }
 
 ###
 
-### TESTE 2 – Criar log de aviso
-POST http://localhost:3000/logs
-Content-Type: application/json
-
-{
-  "level": "warn",
-  "message": "Uso de memória acima do esperado."
-}
-
-###
-
-### TESTE 3 – Criar log de erro
-POST http://localhost:3000/logs
-Content-Type: application/json
-
-{
-  "level": "error",
-  "message": "Falha ao conectar com o banco de dados."
-}
-
-###
-
-### TESTE 4 – Listar os logs recentes
+### TESTE 2 - Listar logs
 GET http://localhost:3000/logs
 
+###
 
-#############################################
-### 🔹 TESTES DE NOTIFICAÇÕES (Factory Method)
-#############################################
-
-### TESTE 5 – Enviar notificação via E-mail (padrão)
+### TESTE 3 - Enviar notificação (email)
 POST http://localhost:3000/notify
 Content-Type: application/json
 
 {
   "type": "email",
   "recipient": "roberto@example.com",
-  "subject": "Boas-vindas!",
-  "content": "Olá Roberto, seu cadastro foi concluído."
+  "subject": "Teste",
+  "content": "Mensagem de teste via API"
 }
 
 ###
 
-### TESTE 6 – Enviar notificação via SMS
-POST http://localhost:3000/notify
-Content-Type: application/json
-
-{
-  "type": "sms",
-  "recipient": "+5582987654321",
-  "content": "Seu pedido foi enviado!"
-}
-
-###
-
-### TESTE 7 – Enviar notificação via Push
-POST http://localhost:3000/notify
-Content-Type: application/json
-
-{
-  "type": "push",
-  "recipient": "roberto_device_01",
-  "subject": "Atualização disponível",
-  "content": "Nova versão do app lançada!"
-}
-
-
-#############################################
-### 🔹 PARTE 2 – PADRÕES ESTRUTURAIS
-### Adapter (Pagamentos) e Decorator (Exportação de dados)
-#############################################
-
-### TESTE 8 – Processar pagamento (Adapter)
+# ---------- PARTE 2 — ESTRUTURAIS ----------
+### TESTE 4 - Processar pagamento via Adapter
 POST http://localhost:3000/payments
 Content-Type: application/json
 
 {
-  "orderId": "ORD12345",
-  "amount": 299.99
+  "orderId": "ORD-1001",
+  "amount": 199.90
 }
 
 ###
 
-### TESTE 9 – Exportar dados sem compressão (Decorator)
+### TESTE 5 - Exportar dados JSON simples
 POST http://localhost:3000/exports
 Content-Type: application/json
 
 {
-  "data": {
-    "id": 1,
-    "cliente": "Roberto Santos",
-    "valor": 150.00
-  },
-  "compressed": false
+  "data": { "id": 1, "cliente": "Roberto", "valor": 150.0 },
+  "format": "json",
+  "compressed": false,
+  "encrypted": false
 }
 
 ###
 
-### TESTE 10 – Exportar dados com compressão (Decorator)
+### TESTE 6 - Exportar dados com compressão (decorator)
 POST http://localhost:3000/exports
 Content-Type: application/json
 
 {
-  "data": {
-    "id": 2,
-    "cliente": "Maria Oliveira",
-    "valor": 480.00
-  },
-  "compressed": true
+  "data": [{ "id": 1, "cliente": "Roberto", "valor": 150.0 }, { "id": 2, "cliente": "Maria", "valor": 200.0 }],
+  "format": "csv",
+  "compressed": true,
+  "encrypted": false
+}
+
+###
+
+### TESTE 7 - Criar pedido via Facade
+POST http://localhost:3000/facade/order
+Content-Type: application/json
+
+{
+  "customerId": "CUST1",
+  "productIds": ["P1", "P2", "P3"]
+}
+
+###
+
+# ---------- PARTE 3 — COMPORTAMENTAIS ----------
+### TESTE 8 - Observer: Inscrever SMS observer
+POST http://localhost:3000/stock/subscribe
+Content-Type: application/json
+
+{
+  "id": "obs_sms_1",
+  "type": "sms",
+  "destination": "+558299999999"
+}
+
+###
+
+### TESTE 9 - Observer: atualizar preço (dispara notificações)
+POST http://localhost:3000/stock/update
+Content-Type: application/json
+
+{
+  "stock": "ACME",
+  "price": 42.5
+}
+
+###
+
+### TESTE 10 - Strategy: aplicar desconto percentual
+POST http://localhost:3000/discounts
+Content-Type: application/json
+
+{
+  "type": "percent",
+  "amount": 200,
+  "value": 10
+}
+
+###
+
+### TESTE 11 - Chain: submeter pedido (válido)
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+  "products": [{ "id": "P1", "price": 100 }, { "id": "P2", "price": 150 }],
+  "discount": 10
+}
+
+###
+
+### TESTE 12 - Chain: submeter pedido (estoque insuficiente)
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+  "products": [{ "id": "OUT", "price": 100 }],
+  "discount": 0
+}
+
+###
+
+### TESTE 13 - Template: processar pagamento por cartão
+POST http://localhost:3000/payproc
+Content-Type: application/json
+
+{
+  "type": "card",
+  "paymentInfo": { "cardNumber": "4111111111111111", "amount": 250.00 }
+}
+
+###
+
+### TESTE 14 - Template: processar pagamento via PayPal
+POST http://localhost:3000/payproc
+Content-Type: application/json
+
+{
+  "type": "paypal",
+  "paymentInfo": { "paypalAccount": "user@paypal.com", "amount": 99.9 }
 }

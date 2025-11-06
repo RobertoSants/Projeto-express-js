@@ -1,13 +1,15 @@
-// Nova API moderna de pagamentos
+// Nova API de pagamentos com interface diferente
 class NewPaymentSystem {
   executePayment(paymentRequest) {
+    // Simula processamento e retorno de objeto com dados da transação
     return {
       status: "success",
-      transactionId: Math.floor(Math.random() * 1000000),
-      amount: paymentRequest.amount,
+      transactionId: `NEW-${Math.floor(Math.random() * 1000000)}`,
       orderId: paymentRequest.orderId,
-      processedAt: new Date()
+      amount: paymentRequest.amount,
+      processedAt: new Date().toISOString()
     };
   }
 }
+
 module.exports = NewPaymentSystem;

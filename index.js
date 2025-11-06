@@ -1,28 +1,41 @@
 const express = require("express");
 const app = express();
 
-// Importa as rotas da Parte 1 (Padrões Criacionais)
+// Parte 1 (criacional)
 const loggingRoutes = require("./src/part1_creational/routes/loggingRoutes");
 const notificationRoutes = require("./src/part1_creational/routes/notificationRoutes");
 
-// Importa as rotas da Parte 2 (Padrões Estruturais)
-const paymentRoutes = require("./src/part2_structural/adapter/routes/paymentRoutes");
-const exportRoutes = require("./src/part2_structural/decorator/routes/exportRoutes");
+// Parte 2 (estrutural)
+const paymentRoutes = require("./src/part2_structural/routes/paymentRoutes");
+const exportRoutes = require("./src/part2_structural/routes/exportRoutes");
+const facadeRoutes = require("./src/part2_structural/routes/facadeRoutes");
 
-// Configurações básicas
+// Parte 3 (comportamental)
+const stockRoutes = require("./src/part3_behavioral/routes/stockRoutes");
+const discountRoutes = require("./src/part3_behavioral/routes/discountRoutes");
+const orderRoutes = require("./src/part3_behavioral/routes/orderRoutes");
+const paymentTemplateRoutes = require("./src/part3_behavioral/routes/paymentTemplateRoutes");
+
 app.use(express.json());
 
-// Rota raiz (mensagem padrão)
+// Root — mensagem simples para testes via navegador
 app.get("/", (req, res) => {
-  res.send("Bem vindo ao meu servidor Express! Use /logs, /notify, /payments ou /exports para testar as rotas.");
+  res.send("Bem vindo ao meu servidor Express! Rotas: /logs, /notify, /payments, /exports, /facade, /stock, /discounts, /orders, /payproc");
 });
 
-// Associa as rotas principais
+// Rotas
 app.use("/logs", loggingRoutes);
 app.use("/notify", notificationRoutes);
+
 app.use("/payments", paymentRoutes);
 app.use("/exports", exportRoutes);
+app.use("/facade", facadeRoutes);
 
-// Inicia o servidor
-const PORT = 3000;
+app.use("/stock", stockRoutes);
+app.use("/discounts", discountRoutes);
+app.use("/orders", orderRoutes);
+app.use("/payproc", paymentTemplateRoutes);
+
+// Porta
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor rodando em http://localhost:${PORT}`));
