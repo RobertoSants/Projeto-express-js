@@ -1,0 +1,70 @@
+### Teste 0 - Verificar servidor
+GET http://localhost:3000/
+Accept: application/json
+
+###
+
+### Teste 1 - Listar logs (GET)
+GET http://localhost:3000/logs
+Accept: application/json
+
+###
+
+### Teste 2 - Criar log informativo (POST)
+POST http://localhost:3000/logs
+Content-Type: application/json
+
+{
+  "level": "info",
+  "message": "Primeiro log via REST Client"
+}
+
+###
+
+### Teste 3 - Criar log de erro (POST)
+POST http://localhost:3000/logs
+Content-Type: application/json
+
+{
+  "level": "error",
+  "message": "Erro de teste via REST Client"
+}
+
+###
+
+### Teste 4 - Enviar notificação por email (POST)
+POST http://localhost:3000/notify
+Content-Type: application/json
+
+{
+  "type": "email",
+  "recipient": "roberto@example.com",
+  "subject": "Boas-vindas",
+  "content": "Sua conta foi criada com sucesso."
+}
+
+###
+
+### Teste 5 - Enviar notificação via SMS (POST)
+POST http://localhost:3000/notify
+Content-Type: application/json
+
+{
+  "type": "sms",
+  "recipient": "+5582988887777",
+  "subject": "Alerta",
+  "content": "Seu pedido foi despachado."
+}
+
+###
+
+### Teste 6 - Enviar notificação via Push (POST)
+POST http://localhost:3000/notify
+Content-Type: application/json
+
+{
+  "type": "push",
+  "recipient": "user123",
+  "subject": "Atualização",
+  "content": "Novo update disponível."
+}
